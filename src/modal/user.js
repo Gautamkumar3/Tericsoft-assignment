@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
-const bcrypt = require("bcrypt");
 
 const userSchema = mongoose.Schema({
   name: { type: String, required: [true, "name is missing"] },
@@ -11,11 +10,6 @@ const userSchema = mongoose.Schema({
     validate: [validator.isEmail, "Please enter valid email address"],
   },
   password: { type: String, required: [true, "password is missing"] },
-});
-
-userSchema.pre("save", async function (next) {
-  this.password = await bcrypt.hash(this.password, 12);
-  next();
 });
 
 const User = mongoose.model("user", userSchema);

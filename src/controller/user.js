@@ -37,7 +37,7 @@ const userLogin = async (req, res) => {
       .send({ status: "error", message: "Email or password is missing" });
   }
   try {
-    const user = await UserModal.findOne({ email, password });
+    const user = await UserModal.findOne({ email });
     if (!user) {
       return res
         .status(401)
@@ -57,4 +57,24 @@ const userLogin = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, userLogin };
+const getProfile = async (req, res) => {
+  console.log(req.userId);
+  try {
+    let user = await UserModal.findOne({ _id: req.userId });
+    if (!user) {
+      return res
+        .status(401)
+        .send({ status: "error", message: "User is not login" });
+    } else {
+      return res.status(200).send({
+        status: "success",
+        message: "User details get successfully",
+        data: user,
+      });
+    }
+  } catch (er) {
+    return res.status(500).send({ status: "error", message: er.message });
+  }
+};
+
+module.exports = { registerUser, userLogin, getProfile };
