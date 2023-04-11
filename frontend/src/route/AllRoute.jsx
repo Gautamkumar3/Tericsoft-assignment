@@ -28,7 +28,14 @@ const AllRoute = () => {
           </PrivateRoute>
         }
       />
-      <Route path="bmi_history" element={<BMIHistory />} />
+      <Route
+        path="bmi_history"
+        element={
+          <PrivateRoute>
+            <BMIHistory />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   );
 };
