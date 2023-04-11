@@ -11,7 +11,7 @@ const calculateBMI = async (req, res) => {
   }
   try {
     let heightInMeter = height * 0.3048;
-    const bmi = (weight / (heightInMeter*heightInMeter)).toFixed(2);
+    const bmi = (weight / (heightInMeter * heightInMeter)).toFixed(2);
     bmi_val = bmi + " kg/m²";
     let bmiValue = new bmiModal({ ...req.body, bmi_val, user_id });
     await bmiValue.save();
@@ -25,4 +25,20 @@ const calculateBMI = async (req, res) => {
   }
 };
 
-module.exports = { calculateBMI };
+const getCalculationHistory = async (req, res) => {
+  const user_id = req.userId;
+
+  try {
+    const historyData = await bmiModal.find({ user_id }, { bmi_val: 1 });
+
+    res.status(200).send({
+      status: "success",
+      message: "Calculation history value get successfully",
+      data: historyData,
+    });
+  } catch (er) {
+    return res.status(500).send({ status: "error", message: er.message });
+  }
+};
+
+module.exports = { calculateBMI, getCalculationHistory };
