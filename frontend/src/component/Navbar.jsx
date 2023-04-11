@@ -1,11 +1,13 @@
 import { Box, Button, Flex, HStack, Text, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const data = JSON.parse(localStorage.getItem("data"));
+
   const toast = useToast();
+  const navigate = useNavigate();
   async function handleLogout() {
     await axios
       .post(
@@ -25,6 +27,7 @@ const Navbar = () => {
           position: "top",
         });
         localStorage.removeItem("data");
+        navigate("/login");
       })
       .catch((er) => {
         toast({
@@ -51,7 +54,8 @@ const Navbar = () => {
       top="0px"
     >
       <Link to="/user_profile">User Profile</Link>
-      <Link to="/">BMI Calculatetor</Link>
+      <Link to="/">BMI Calculator</Link>
+      <Link to="/bmi_history">BMI History</Link>
 
       {!data ? (
         <>
