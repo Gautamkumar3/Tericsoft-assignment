@@ -37,7 +37,7 @@ const userLogin = async (req, res) => {
       .send({ status: "error", message: "Email or password is missing" });
   }
   try {
-    const user = await UserModal.findOne({ email });
+    const user = await UserModal.findOne({ email, password });
     if (!user) {
       return res
         .status(401)
@@ -58,7 +58,7 @@ const userLogin = async (req, res) => {
 };
 
 const getProfile = async (req, res) => {
-  console.log(req.userId);
+ 
   try {
     let user = await UserModal.findOne({ _id: req.userId });
     if (!user) {
