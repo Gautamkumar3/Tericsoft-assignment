@@ -1,6 +1,7 @@
-import { Box, SimpleGrid, Text } from "@chakra-ui/react";
+import { Box, Heading, SimpleGrid, Text } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const getBMIHistory = async ({ token }) => {
   const res = await axios.get(
@@ -35,12 +36,42 @@ const BMIHistory = () => {
   };
 
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getBMIHistory({ token: userData.token }).then((res) =>
-      setData(res.data.data)
-    );
+    setLoading(true);
+    getBMIHistory({ token: userData.token }).then((res) => {
+      setData(res.data.data);
+      setLoading(false);
+    });
   }, []);
+
+  if (loading) {
+    return (
+      <Heading textAlign={"center"} mt={"10%"} fontSize={"25px"}>
+        Loading...
+      </Heading>
+    );
+  }
+
+  if (data.length === 0) {
+    return (
+      <Box mt={"10%"}>
+        <Heading textAlign={"center"} fontSize={"25px"}>
+          No history found for this user
+        </Heading>
+        <Text
+          fontSize={"20px"}
+          color={"blue"}
+          fontWeight={"bold"}
+          textDecor={"underline"}
+          mt={5}
+        >
+          <Link to="/">Go back to BMI Calculator page and Check your BMI.</Link>
+        </Text>
+      </Box>
+    );
+  }
 
   return (
     <SimpleGrid columns={[2, 3, 4]} w={"90%"} m="auto" mt={"5%"} spacing={10}>

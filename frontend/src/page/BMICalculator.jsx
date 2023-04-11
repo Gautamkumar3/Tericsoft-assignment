@@ -81,6 +81,7 @@ const BMICalculator = () => {
               type={"number"}
               placeholder="in feet"
               name="height"
+              step="0.01"
               onChange={handleChange}
             />
             <FormLabel mt={2}>Weight</FormLabel>
@@ -88,6 +89,7 @@ const BMICalculator = () => {
               type={"number"}
               name="weight"
               placeholder="in kg"
+              step="0.01"
               onChange={handleChange}
             />
             <Button mt={3} type="submit" colorScheme={"whatsapp"} w="full">
